@@ -10,9 +10,6 @@ class LiveStreamData {
   LiveStreamData(this.name, this.videoCode, this.boundingBox);
 }
 
-final width = 375;
-final height = 427.5;
-
 final snowLeopard = LiveStreamData('Snow Leopard', 'mv_08X3axHI', Rectangle(0, 0, 0.288, 0.28103));
 final lion = LiveStreamData('Lion', 'PA3niQ9ECFs', Rectangle(0.31466, 0, 0.376, 0.28103));
 final panda = LiveStreamData('Panda', 'Gm3bQVANtVo', Rectangle(0.71733, 0, 0.28266, 0.34894));
@@ -37,12 +34,17 @@ final zooLiveStreams = [
   tiger,
 ];
 
-getLiveStreamCode(Size imgSize, Point localPoint) {
-  for (final e in zooLiveStreams) {
-    Rectangle touchArea = Rectangle(e.boundingBox.left * imgSize.width, e.boundingBox.top * imgSize.height,
-        e.boundingBox.width * imgSize.width, e.boundingBox.height * imgSize.height);
+LiveStreamData getLiveStream(Size imgSize, Point localPoint) {
+  for (final streamData in zooLiveStreams) {
+    Rectangle touchArea = Rectangle(
+        streamData.boundingBox.left * imgSize.width,
+        streamData.boundingBox.top * imgSize.height,
+        streamData.boundingBox.width * imgSize.width,
+        streamData.boundingBox.height * imgSize.height);
+
     if (touchArea.containsPoint(localPoint)) {
-      return e.videoCode;
+      return streamData;
     }
   }
+  return null;
 }

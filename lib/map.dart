@@ -20,25 +20,24 @@ _onTapUp(BuildContext context, TapUpDetails details) {
   final y = localPos.dy;
   print("Local Pos " + x.toString() + ", " + y.toString());
 
-  final code = getLiveStreamCode(context.size, Point(x, y));
+  final streamData = getLiveStream(context.size, Point(x, y));
 
-  playVideo(context, code);
+  playVideo(context, streamData);
 }
 
-playVideo(BuildContext context, String videoCode) {
-  if (videoCode.isEmpty) {
+playVideo(BuildContext context, LiveStreamData streamData) {
+  if (streamData == null) {
     return;
   }
 
   if (kIsWeb) {
-    _launchLiveStreamUrl(videoCode);
+    _launchLiveStreamUrl(streamData.videoCode);
   } else {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) => YouTubeLiveStreamPlayer(
-                videoCode: videoCode,
-              )),
+          builder: (context) =>
+              YouTubeLiveStreamPlayer(videoCode: streamData.videoCode, activityName: streamData.name)),
     );
   }
 }
