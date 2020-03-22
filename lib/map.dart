@@ -8,11 +8,27 @@ import 'LiveStreamData.dart';
 import 'YoutubeLivestreamPlayer.dart';
 
 class ActivityMap extends StatefulWidget {
+  final List<LiveStreamData> streams;
+  final String image;
+  const ActivityMap({Key key, @required this.streams, @required this.image}) : super(key: key);
   @override
   _ActivityMapState createState() => _ActivityMapState();
 }
 
-_onTapUp(BuildContext context, TapUpDetails details) {
+class _ActivityMapState extends State<ActivityMap> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapUp: (TapUpDetails details) => _onTapUp(context, details, widget.streams),
+      child: Image(
+        image: AssetImage(widget.image),
+        fit: BoxFit.contain,
+      ),
+    );
+  }
+}
+
+_onTapUp(BuildContext context, TapUpDetails details, List<LiveStreamData> streams) {
   RenderBox box = context.findRenderObject();
   Offset localPos = box.globalToLocal(details.globalPosition);
 
@@ -20,7 +36,7 @@ _onTapUp(BuildContext context, TapUpDetails details) {
   final y = localPos.dy;
   print("Local Pos " + x.toString() + ", " + y.toString());
 
-  final streamData = getLiveStream(context.size, Point(x, y));
+  final streamData = getLiveStream(context.size, Point(x, y), streams);
 
   playVideo(context, streamData);
 }
@@ -48,18 +64,5 @@ _launchLiveStreamUrl(String url) async {
     await launch(ytUrl);
   } else {
     throw 'Could not launch $ytUrl';
-  }
-}
-
-class _ActivityMapState extends State<ActivityMap> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTapUp: (TapUpDetails details) => _onTapUp(context, details),
-      child: Image(
-        image: AssetImage('assets/Livestreammap.png'),
-        fit: BoxFit.contain,
-      ),
-    );
   }
 }
