@@ -14,9 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Bring the outside world to the inside'),
+      home: MyHomePage(title: '🦓 StreaMap'),
     );
   }
 }
@@ -38,15 +38,9 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: Center(
-            child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ActivityMap(),
-              ),
-            )
-          ],
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ActivityMap(),
         )));
   }
 }

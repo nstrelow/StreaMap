@@ -1,8 +1,11 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'LiveStreamData.dart';
+import 'YoutubeLivestreamPlayer.dart';
 
 class ActivityMap extends StatefulWidget {
   @override
@@ -15,12 +18,38 @@ _onTapUp(BuildContext context, TapUpDetails details) {
 
   final x = localPos.dx;
   final y = localPos.dy;
-
-  print("Size: " + context.size.toString());
-
-  LiveStreamMap.openLiveStream(context.size, Point(x, y));
-
   print("Local Pos " + x.toString() + ", " + y.toString());
+
+  final code = getLiveStreamCode(context.size, Point(x, y));
+
+  playVideo(context, code);
+}
+
+playVideo(BuildContext context, String videoCode) {
+  if (videoCode.isEmpty) {
+    return;
+  }
+
+  if (kIsWeb) {
+    _launchLiveStreamUrl(videoCode);
+  } else {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => YouTubeLiveStreamPlayer(
+                videoCode: videoCode,
+              )),
+    );
+  }
+}
+
+_launchLiveStreamUrl(String url) async {
+  final ytUrl = 'https://www.youtube.com/watch?v=' + url;
+  if (await canLaunch(ytUrl)) {
+    await launch(ytUrl);
+  } else {
+    throw 'Could not launch $ytUrl';
+  }
 }
 
 class _ActivityMapState extends State<ActivityMap> {
