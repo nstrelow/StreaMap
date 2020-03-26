@@ -20,10 +20,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  cloud_firestore:
   cupertino_icons:
-  #chewie:
-  #video_player:
-  #youtube_extractor:
   material_design_icons_flutter:
   url_launcher:
   url_launcher_web:
