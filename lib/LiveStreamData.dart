@@ -65,7 +65,7 @@ const zooLiveStreams = [
 
 LiveStreamData getLiveStream(Size imgSize, Point localPoint, List<LiveStreamData> streams) {
   for (final streamData in streams) {
-    Rectangle touchArea = Rectangle(
+    final touchArea = Rectangle(
         streamData.boundingBox.left * imgSize.width,
         streamData.boundingBox.top * imgSize.height,
         streamData.boundingBox.width * imgSize.width,

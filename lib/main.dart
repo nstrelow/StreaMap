@@ -103,5 +103,3 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-// Inside videoplayer
-// <video src="http://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4" loop="" style="border: none; width: 1345.5px; height: 897px;"></video>

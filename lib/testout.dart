@@ -7,7 +7,7 @@ class Testout extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Container(
-          decoration: new BoxDecoration(
+          decoration: BoxDecoration(
               color: Colors.red,
               shape: BoxShape.rectangle,
               borderRadius: BorderRadius.all(Radius.circular(8.0))),

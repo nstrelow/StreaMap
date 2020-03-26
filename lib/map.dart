@@ -28,20 +28,20 @@ class _ActivityMapState extends State<ActivityMap> {
   }
 }
 
-_onTapUp(BuildContext context, TapUpDetails details, List<LiveStreamData> streams) {
+void _onTapUp(BuildContext context, TapUpDetails details, List<LiveStreamData> streams) {
   RenderBox box = context.findRenderObject();
-  Offset localPos = box.globalToLocal(details.globalPosition);
+  final localPos = box.globalToLocal(details.globalPosition);
 
   final x = localPos.dx;
   final y = localPos.dy;
-  print("Local Pos " + x.toString() + ", " + y.toString());
+  print('Local Pos ' + x.toString() + ', ' + y.toString());
 
   final streamData = getLiveStream(context.size, Point(x, y), streams);
 
   playVideo(context, streamData);
 }
 
-playVideo(BuildContext context, LiveStreamData streamData) {
+void playVideo(BuildContext context, LiveStreamData streamData) {
   if (streamData == null) {
     return;
   }
@@ -58,7 +58,7 @@ playVideo(BuildContext context, LiveStreamData streamData) {
   }
 }
 
-_launchLiveStreamUrl(String url) async {
+void _launchLiveStreamUrl(String url) async {
   final ytUrl = 'https://www.youtube.com/watch?v=' + url;
   if (await canLaunch(ytUrl)) {
     await launch(ytUrl);
