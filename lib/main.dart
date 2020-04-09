@@ -1,8 +1,11 @@
-import 'package:StreaMap/map.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 
-import 'LiveStreamData.dart';
+import 'map.dart';
+import 'models/Category.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,18 +13,36 @@ void main() {
 
 class MyApp extends StatelessWidget {
   MyApp();
+
   MyApp.forDesignTime();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '🦓 StreaMap',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        StreamProvider<List<Category>>(create: (_) => streamOfCategories(), initialData: []),
+      ],
+      child: MaterialApp(
+        title: '🦓 StreaMap',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage(title: '🦓 StreaMap'),
       ),
-      home: MyHomePage(title: '🦓 StreaMap'),
     );
   }
+}
+
+// filter all categories without videos to be displayed
+bool hasDisplayVideos(Category category) {
+  return category.kinds.values.any((kind) => kind.videos.values.any((video) => video.display));
+}
+
+Stream<List<Category>> streamOfCategories() {
+  var ref = Firestore.instance.collection('import');
+  return ref
+      .snapshots()
+      .map((snap) => snap.documents.map((doc) => Category.fromMap(doc.data)).where(hasDisplayVideos).toList());
 }
 
 class MyHomePage extends StatefulWidget {
@@ -35,71 +56,109 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    ActivityMap(
-      streams: zooLiveStreams,
-      image: 'assets/zoo.png',
-    ),
-    ActivityMap(
-      streams: parkLiveStreams,
-      image: 'assets/park.png',
-    ),
-    ActivityMap(
-      streams: zooLiveStreams,
-      image: 'assets/zoo.png',
-    ),
-    ActivityMap(
-      streams: parkLiveStreams,
-      image: 'assets/park.png',
-    ),
-  ];
+//  void printRemoteConifg() async {
+//    final remoteConfig = await RemoteConfig.instance;
+//    await remoteConfig.fetch(expiration: const Duration(hours: 5));
+//    await remoteConfig.activateFetched();
+//    print('welcome message: ' + remoteConfig.getString('database'));
+//
+//    await Firestore.instance.collection(remoteConfig.getString('database')).getDocuments().then((docs) => {
+//          docs.documents.forEach((element) {
+//            print(element.data.values);
+//          })
+//        });
+//  }
+
+  BottomNavigationBarItem _bottomNavigationItem(String categoryName) {
+    switch (categoryName) {
+      case 'Amusement':
+        return BottomNavigationBarItem(
+          icon: Icon(MdiIcons.ferrisWheel),
+          title: Text(categoryName),
+          backgroundColor: Colors.lightGreen,
+        );
+      case 'Aquarium':
+        return BottomNavigationBarItem(
+          icon: Icon(MdiIcons.fish),
+          title: Text(categoryName),
+          backgroundColor: Colors.indigo,
+        );
+      case 'Birds':
+        return BottomNavigationBarItem(
+          icon: Icon(MdiIcons.owl),
+          title: Text(categoryName),
+          backgroundColor: Colors.lightBlue,
+        );
+      case 'City':
+        return BottomNavigationBarItem(
+          icon: Icon(MdiIcons.city),
+          title: Text(categoryName),
+          backgroundColor: Colors.grey,
+        );
+      case 'Farm':
+        return BottomNavigationBarItem(
+          icon: Icon(MdiIcons.cow),
+          title: Text(categoryName),
+          backgroundColor: Colors.amber,
+        );
+      case 'Forest':
+        return BottomNavigationBarItem(
+          icon: Icon(MdiIcons.pineTree),
+          title: Text(categoryName),
+          backgroundColor: Colors.green,
+        );
+      case 'Museum':
+        return BottomNavigationBarItem(
+          icon: Icon(MdiIcons.bank),
+          title: Text(categoryName),
+          backgroundColor: Colors.purple,
+        );
+      case 'Zoo':
+        return BottomNavigationBarItem(
+          icon: Icon(MdiIcons.penguin),
+          title: Text(categoryName),
+          backgroundColor: Colors.orange,
+        );
+      case 'On the Way':
+        return BottomNavigationBarItem(
+          icon: Icon(MdiIcons.train),
+          title: Text(categoryName),
+          backgroundColor: Colors.blueGrey,
+        );
+      default:
+        return BottomNavigationBarItem(
+          icon: Icon(MdiIcons.helpBox),
+          title: Text(categoryName),
+          backgroundColor: Colors.black38,
+        );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final categories = Provider.of<List<Category>>(context);
+    if (categories.isEmpty) {
+      return Center(child: CircularProgressIndicator());
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-          child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: _widgetOptions.elementAt(_selectedIndex),
-      )),
+      body: ActivityMap(category: categories[_selectedIndex]),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(MdiIcons.penguin),
-            title: Text('Zoo'),
-            backgroundColor: Colors.orange,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(MdiIcons.ferrisWheel),
-            title: Text('Holiday Park'),
-            backgroundColor: Colors.lightGreen,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(MdiIcons.fish),
-            title: Text('Aquarium'),
-            backgroundColor: Colors.indigo,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(MdiIcons.bank),
-            title: Text('Museum'),
-            backgroundColor: Colors.purple,
-          ),
-        ],
+        type: BottomNavigationBarType.shifting,
+        items: categories.map((category) => _bottomNavigationItem(category.name)).toList(),
         currentIndex: _selectedIndex,
-        //selectedItemColor: Theme.of(context).accentColor,
         onTap: _onItemTapped,
       ),
     );
   }
 }
-

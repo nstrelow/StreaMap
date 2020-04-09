@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class YouTubeLiveStreamPlayer extends StatefulWidget {
-  final videoCode;
+  final videoUrl;
   final activityName;
-  const YouTubeLiveStreamPlayer({Key key, @required this.videoCode, this.activityName}) : super(key: key);
+  const YouTubeLiveStreamPlayer({Key key, @required this.videoUrl, this.activityName}) : super(key: key);
 
   @override
   _YouTubeLiveStreamPlayerState createState() => _YouTubeLiveStreamPlayerState();
@@ -15,7 +15,7 @@ class _YouTubeLiveStreamPlayerState extends State<YouTubeLiveStreamPlayer> {
   @override
   void initState() {
     _controller = YoutubePlayerController(
-      initialVideoId: widget.videoCode,
+      initialVideoId: YoutubePlayer.convertUrlToId(widget.videoUrl),
       flags: YoutubePlayerFlags(
         isLive: true,
         autoPlay: true,

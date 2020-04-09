@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "streamap",
     "public": "build/web",
     "ignore": [
       "firebase.json",
