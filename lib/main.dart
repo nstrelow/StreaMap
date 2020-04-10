@@ -14,8 +14,6 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp();
 
-  MyApp.forDesignTime();
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
