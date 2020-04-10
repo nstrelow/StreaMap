@@ -83,12 +83,13 @@ class _MyHomePageState extends State<MyHomePage> {
     }
 
     final category = categories[_selectedIndex];
+    final icon = category.icon != null ? MdiIcons.fromString(category.icon) : MdiIcons.helpBox;
 
     return Scaffold(
       appBar: AppBar(
         title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[Icon(MdiIcons.fromString(category.icon)), SizedBox(width: 8), Text(category.name)]),
+            children: <Widget>[Icon(icon), SizedBox(width: 8), Text(category.name)]),
         backgroundColor: category.color != null ? HexColor(category.color) : Colors.blueGrey,
       ),
       body: ActivityMap(category: categories[_selectedIndex]),
@@ -96,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
         type: BottomNavigationBarType.shifting,
         items: categories
             .map((category) => BottomNavigationBarItem(
-                  icon: Icon(MdiIcons.fromString(category.icon)),
+                  icon: category.icon != null ? Icon(MdiIcons.fromString(category.icon)) : MdiIcons.helpBox,
                   title: Text(category.name),
                   backgroundColor: category.color != null ? HexColor(category.color) : Colors.blueGrey,
                 ))
