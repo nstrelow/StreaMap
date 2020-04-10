@@ -26,6 +26,8 @@
 class Category {
   final Map<String, Kind> kinds;
   final String name;
+  final String icon;
+  final String color;
 
   String get id {
     return name.toLowerCase().replaceAll(' ', '_');
@@ -34,11 +36,15 @@ class Category {
   Category({
     this.kinds,
     this.name,
+    this.icon,
+    this.color,
   });
 
   factory Category.fromMap(Map<String, dynamic> data) => Category(
         kinds: Map.from(data['kinds']).map((k, v) => MapEntry<String, Kind>(k, Kind.fromMap(v))),
         name: data['name'],
+        icon: data['icon'],
+        color: data['color'],
       );
 
   Map<String, dynamic> toMap() => {

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'map.dart';
 import 'models/Category.dart';
+import 'utils/hex_color.dart';
 
 void main() {
   runApp(MyApp());
@@ -74,71 +75,6 @@ class _MyHomePageState extends State<MyHomePage> {
 //        });
 //  }
 
-  BottomNavigationBarItem _bottomNavigationItem(String categoryName) {
-    switch (categoryName) {
-      case 'Amusement':
-        return BottomNavigationBarItem(
-          icon: Icon(MdiIcons.ferrisWheel),
-          title: Text(categoryName),
-          backgroundColor: Colors.lightGreen,
-        );
-      case 'Aquarium':
-        return BottomNavigationBarItem(
-          icon: Icon(MdiIcons.fish),
-          title: Text(categoryName),
-          backgroundColor: Colors.indigo,
-        );
-      case 'Birds':
-        return BottomNavigationBarItem(
-          icon: Icon(MdiIcons.owl),
-          title: Text(categoryName),
-          backgroundColor: Colors.lightBlue,
-        );
-      case 'City':
-        return BottomNavigationBarItem(
-          icon: Icon(MdiIcons.city),
-          title: Text(categoryName),
-          backgroundColor: Colors.grey,
-        );
-      case 'Farm':
-        return BottomNavigationBarItem(
-          icon: Icon(MdiIcons.cow),
-          title: Text(categoryName),
-          backgroundColor: Colors.amber,
-        );
-      case 'Forest':
-        return BottomNavigationBarItem(
-          icon: Icon(MdiIcons.pineTree),
-          title: Text(categoryName),
-          backgroundColor: Colors.green,
-        );
-      case 'Museum':
-        return BottomNavigationBarItem(
-          icon: Icon(MdiIcons.bank),
-          title: Text(categoryName),
-          backgroundColor: Colors.purple,
-        );
-      case 'Zoo':
-        return BottomNavigationBarItem(
-          icon: Icon(MdiIcons.penguin),
-          title: Text(categoryName),
-          backgroundColor: Colors.orange,
-        );
-      case 'On the Way':
-        return BottomNavigationBarItem(
-          icon: Icon(MdiIcons.train),
-          title: Text(categoryName),
-          backgroundColor: Colors.blueGrey,
-        );
-      default:
-        return BottomNavigationBarItem(
-          icon: Icon(MdiIcons.helpBox),
-          title: Text(categoryName),
-          backgroundColor: Colors.black38,
-        );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final categories = Provider.of<List<Category>>(context);
@@ -146,14 +82,25 @@ class _MyHomePageState extends State<MyHomePage> {
       return Center(child: CircularProgressIndicator());
     }
 
+    final category = categories[_selectedIndex];
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[Icon(MdiIcons.fromString(category.icon)), SizedBox(width: 8), Text(category.name)]),
+        backgroundColor: category.color != null ? HexColor(category.color) : Colors.blueGrey,
       ),
       body: ActivityMap(category: categories[_selectedIndex]),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.shifting,
-        items: categories.map((category) => _bottomNavigationItem(category.name)).toList(),
+        items: categories
+            .map((category) => BottomNavigationBarItem(
+                  icon: Icon(MdiIcons.fromString(category.icon)),
+                  title: Text(category.name),
+                  backgroundColor: category.color != null ? HexColor(category.color) : Colors.blueGrey,
+                ))
+            .toList(),
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
