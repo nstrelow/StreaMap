@@ -1,3 +1,4 @@
+import 'package:StreaMap/web_player.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -82,7 +83,15 @@ void playVideo(BuildContext context, Kind kind) {
   final video = kind.videos.values.firstWhere((video) => video.display);
 
   if (foundation.kIsWeb) {
-    _launchLiveStreamUrl(video.link);
+    //_launchLiveStreamUrl(video.link);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => WebPlayer(
+                url: video.link,
+                activityName: kind.name,
+              )),
+    );
   } else {
     Navigator.push(
       context,
