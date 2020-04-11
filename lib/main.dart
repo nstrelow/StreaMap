@@ -135,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               Text(
                 '🦓 StreaMap',
-                style: Theme.of(context).textTheme.headline5.copyWith(color: Theme.of(context).primaryColor),
+                style: Theme.of(context).textTheme.headline4.copyWith(color: Theme.of(context).primaryColor),
               ),
               SizedBox(height: 8),
               Text(
@@ -160,7 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       text: 'www.flaticon.com',
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
-                          print('You clicked on me!');
+                          launch('https://www.flaticon.com/');
                         }),
                   TextSpan(text: ' made by'),
                 ]),
