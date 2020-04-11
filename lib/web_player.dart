@@ -16,7 +16,7 @@ class _WebPlayerState extends State<WebPlayer> {
   @override
   Widget build(BuildContext context) {
     final _iframeElement = IFrameElement();
-    _iframeElement.src = widget.url.replaceFirst('watch?v=', 'embed/');
+    _iframeElement.src = widget.url.split('&').first.replaceFirst('watch?v=', 'embed/');
     _iframeElement.style.border = 'none';
 
     print(widget.url);
