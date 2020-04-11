@@ -1,4 +1,6 @@
 import 'package:StreaMap/web_player.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -49,7 +51,8 @@ class _ActivityMapState extends State<ActivityMap> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Expanded(
+                  Flexible(
+                    flex: 4,
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Image.network(
@@ -57,9 +60,15 @@ class _ActivityMapState extends State<ActivityMap> {
                       ),
                     ),
                   ),
-                  Text(
-                    kinds[index].name,
-                    style: Theme.of(context).textTheme.bodyText1.copyWith(color: Colors.white),
+                  Flexible(
+                    flex: 1,
+                    child: AutoSizeText(
+                      kinds[index].name,
+                      maxLines: 1,
+                      minFontSize: 10,
+                      overflow: TextOverflow.ellipsis,
+                      //style: Theme.of(context).textTheme.bodyText1.copyWith(color: Colors.white),
+                    ),
                   )
                 ],
               ),

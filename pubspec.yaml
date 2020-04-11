@@ -29,6 +29,7 @@ dependencies:
   url_launcher:
   url_launcher_web:
   youtube_player_flutter:
+  auto_size_text:
 
 dev_dependencies:
   flutter_test:

@@ -91,13 +91,21 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[Icon(icon), SizedBox(width: 8), Text(category.name)]),
         backgroundColor: category.color != null ? HexColor(category.color) : Colors.blueGrey,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.info),
+            onPressed: () {
+              showInfoDialog(context);
+            },
+          )
+        ],
       ),
       body: ActivityMap(category: categories[_selectedIndex]),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.shifting,
         items: categories
             .map((category) => BottomNavigationBarItem(
-                  icon: category.icon != null ? Icon(MdiIcons.fromString(category.icon)) : MdiIcons.helpBox,
+                  icon: Icon(category.icon != null ? MdiIcons.fromString(category.icon) : MdiIcons.helpBox),
                   title: Text(category.name),
                   backgroundColor: category.color != null ? HexColor(category.color) : Colors.blueGrey,
                 ))
@@ -106,5 +114,27 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _onItemTapped,
       ),
     );
+  }
+
+  void showInfoDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        child: SimpleDialog(
+          title: Column(
+            children: <Widget>[
+              Text(
+                '🦓 StreaMap',
+                style: Theme.of(context).textTheme.headline5.copyWith(color: Theme.of(context).primaryColor),
+              ),
+              SizedBox(height: 8),
+              Text(
+                'Adventure at home',
+                style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.grey),
+              )
+            ],
+          ),
+          contentPadding: EdgeInsets.all(24),
+          children: <Widget>[],
+        ));
   }
 }
