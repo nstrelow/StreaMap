@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'map.dart';
 import 'models/Category.dart';
@@ -95,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: Icon(Icons.info),
             onPressed: () {
-              showInfoDialog(context);
+              showInfoDialog(context, categories);
             },
           )
         ],
@@ -116,10 +118,19 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void showInfoDialog(BuildContext context) {
+  void showInfoDialog(BuildContext context, List<Category> categories) {
+    final iconAuthors = categories
+        .expand((c) => c.kinds.values.expand((k) => k.videos.values.map((v) => v.display ? v.image.author : '')))
+        .toSet()
+        .toList();
+    iconAuthors.remove('');
+    iconAuthors.sort();
+
     showDialog(
         context: context,
         child: SimpleDialog(
+          titlePadding: EdgeInsets.fromLTRB(24, 16, 24, 0),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
           title: Column(
             children: <Widget>[
               Text(
@@ -129,12 +140,49 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(height: 8),
               Text(
                 'Adventure at home',
-                style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.grey),
+                style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.blueGrey),
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Brought to you by Ulla and Nils',
+                style: TextStyle(fontSize: 14),
               )
             ],
           ),
           contentPadding: EdgeInsets.all(24),
-          children: <Widget>[],
+          children: <Widget>[
+            Column(children: <Widget>[
+              RichText(
+                text: TextSpan(style: Theme.of(context).textTheme.headline6, children: [
+                  TextSpan(text: 'Icons from '),
+                  TextSpan(
+                      style: TextStyle(color: Colors.blue),
+                      text: 'www.flaticon.com',
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          print('You clicked on me!');
+                        }),
+                  TextSpan(text: ' made by'),
+                ]),
+              ),
+              Column(
+                children: iconAuthors
+                    .map((author) => Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
+                          child: InkWell(
+                            onTap: () {
+                              launch('https://www.flaticon.com/authors/' + author.replaceAll(RegExp(r'\s|_'), '-'));
+                            },
+                            child: Text(
+                              author,
+                              style: TextStyle(fontSize: 18, color: Colors.blue),
+                            ),
+                          ),
+                        ))
+                    .toList(),
+              )
+            ])
+          ],
         ));
   }
 }
