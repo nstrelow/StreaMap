@@ -65,9 +65,11 @@ class _ActivityMapState extends State<ActivityMap> {
                     child: AutoSizeText(
                       kinds[index].name,
                       maxLines: 1,
-                      minFontSize: 10,
+                      minFontSize: 8,
+                      stepGranularity: 0.1,
+                      maxFontSize: 30,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white),
+                      style: TextStyle(color: Colors.white),
                     ),
                   )
                 ],
