@@ -67,7 +67,7 @@ class _ActivityMapState extends State<ActivityMap> {
                       maxLines: 1,
                       minFontSize: 10,
                       overflow: TextOverflow.ellipsis,
-                      //style: Theme.of(context).textTheme.bodyText1.copyWith(color: Colors.white),
+                      style: Theme.of(context).textTheme.bodyText2.copyWith(color: Colors.white),
                     ),
                   )
                 ],
