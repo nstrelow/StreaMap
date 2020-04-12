@@ -81,7 +81,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     final categories = Provider.of<List<Category>>(context);
     if (categories.isEmpty) {
-      return Center(child: CircularProgressIndicator());
+      return Center(
+          child: Column(
+        children: [Image.asset('assets/logo-wide.png'), CircularProgressIndicator()],
+        mainAxisAlignment: MainAxisAlignment.center,
+      ));
     }
 
     final category = categories[_selectedIndex];
