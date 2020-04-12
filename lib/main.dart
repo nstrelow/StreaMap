@@ -24,11 +24,11 @@ class MyApp extends StatelessWidget {
         StreamProvider<List<Category>>(create: (_) => streamOfCategories(), initialData: []),
       ],
       child: MaterialApp(
-        title: '🦓 StreaMap',
+        title: 'StreaMap',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: MyHomePage(title: '🦓 StreaMap'),
+        home: MyHomePage(title: 'StreaMap'),
       ),
     );
   }
