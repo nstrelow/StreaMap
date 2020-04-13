@@ -14,22 +14,23 @@ description: A map displaying livestreams of zoos, concerts and other fun activi
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.2.0 <3.0.0'
+  sdk: '>=2.3.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
 
+  auto_size_text:
   cloud_firestore:
   cupertino_icons:
   firebase_remote_config:
   flutter_staggered_grid_view:
   material_design_icons_flutter:
   provider:
+  rxdart:
   url_launcher:
   url_launcher_web:
   youtube_player_flutter:
-  auto_size_text:
 
 dev_dependencies:
   flutter_test:
