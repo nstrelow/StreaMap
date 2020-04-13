@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'map.dart';
-import 'models/Category.dart';
+import 'models/category.dart';
+import 'models/config.dart';
 import 'utils/hex_color.dart';
 
 void main() {
@@ -21,7 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<List<Category>>(create: (_) => streamOfCategories(), initialData: []),
+        StreamProvider<List<Category>>(create: (_) => streamOfConfigCategories(), initialData: []),
       ],
       child: MaterialApp(
         title: 'StreaMap',
@@ -39,11 +43,22 @@ bool hasDisplayVideos(Category category) {
   return category.kinds.values.any((kind) => kind.videos.values.any((video) => video.display));
 }
 
-Stream<List<Category>> streamOfCategories() {
-  var ref = Firestore.instance.collection('import');
-  return ref
-      .snapshots()
-      .map((snap) => snap.documents.map((doc) => Category.fromMap(doc.data)).where(hasDisplayVideos).toList());
+Stream<List<Category>> streamOfConfigCategories() {
+  return streamOfConfig().flatMap((config) => streamOfCategories(config));
+}
+
+Stream<Config> streamOfConfig() {
+  var ref = Firestore.instance.collection('config').document('prod');
+  return ref.snapshots().map((snap) => Config.fromMap(snap.data));
+}
+
+Stream<List<Category>> streamOfCategories(Config config) {
+  return Firestore.instance.collection(config.database).snapshots().map((snap) {
+    final categories = snap.documents.map((doc) => Category.fromMap(doc.data)).where(hasDisplayVideos).toList();
+    final indexMap = {for (var c in categories) c.id: config.order.contains(c.id) ? config.order.indexOf(c.id) : 1000};
+    categories.sort((a, b) => indexMap[a.id] - indexMap[b.id]);
+    return categories;
+  });
 }
 
 class MyHomePage extends StatefulWidget {
