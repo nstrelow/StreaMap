@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase/firebase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         StreamProvider<List<Category>>(create: (_) => streamOfConfigCategories(), initialData: []),
+        // should get using js.context.hasProperty('firebase') ? analytics() : null
+        Provider<Analytics>(create: (_) => analytics())
       ],
       child: MaterialApp(
         title: 'StreaMap',
@@ -79,22 +82,11 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-//  void printRemoteConifg() async {
-//    final remoteConfig = await RemoteConfig.instance;
-//    await remoteConfig.fetch(expiration: const Duration(hours: 5));
-//    await remoteConfig.activateFetched();
-//    print('welcome message: ' + remoteConfig.getString('database'));
-//
-//    await Firestore.instance.collection(remoteConfig.getString('database')).getDocuments().then((docs) => {
-//          docs.documents.forEach((element) {
-//            print(element.data.values);
-//          })
-//        });
-//  }
-
   @override
   Widget build(BuildContext context) {
     final categories = Provider.of<List<Category>>(context);
+    final analytics = Provider.of<Analytics>(context);
+
     if (categories.isEmpty) {
       return Center(
           child: Column(
@@ -132,7 +124,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ))
             .toList(),
         currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
+        onTap: (int index) {
+          analytics.setCurrentScreen(categories[index].name);
+          analytics.logEvent('select_category', {'name': categories[index].name});
+          _onItemTapped(index);
+        },
       ),
     );
   }

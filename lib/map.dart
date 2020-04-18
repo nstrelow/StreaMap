@@ -1,9 +1,11 @@
 import 'package:StreaMap/web_player.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase/firebase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'models/category.dart';
@@ -92,6 +94,9 @@ void playVideo(BuildContext context, Kind kind) {
   }
 
   final video = kind.videos.values.firstWhere((video) => video.display);
+  final analytics = Provider.of<Analytics>(context);
+  analytics.setCurrentScreen(kind.name);
+  analytics.logEvent('view_video', {'name': kind.name});
 
   if (foundation.kIsWeb) {
     //_launchLiveStreamUrl(video.link);
