@@ -1,7 +1,9 @@
 import 'dart:html';
 import 'dart:ui' as ui;
 
+import 'package:firebase/firebase.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class WebPlayer extends StatefulWidget {
   final String url;
@@ -15,6 +17,9 @@ class WebPlayer extends StatefulWidget {
 class _WebPlayerState extends State<WebPlayer> {
   @override
   Widget build(BuildContext context) {
+    final analytics = Provider.of<Analytics>(context);
+    analytics.setCurrentScreen('video_player');
+
     final _iframeElement = IFrameElement();
     _iframeElement.src = widget.url.split('&').first.replaceFirst('watch?v=', 'embed/');
     _iframeElement.style.border = 'none';
@@ -38,6 +43,7 @@ class _WebPlayerState extends State<WebPlayer> {
         leading: IconButton(
           icon: const BackButtonIcon(),
           onPressed: () {
+            analytics.logEvent('navigate_back', {'from': widget.activityName});
             Navigator.maybePop(context);
           },
         ),

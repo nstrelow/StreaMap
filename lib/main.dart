@@ -87,6 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
     final categories = Provider.of<List<Category>>(context);
     final analytics = Provider.of<Analytics>(context);
 
+    analytics.setCurrentScreen('categories');
+
     if (categories.isEmpty) {
       return Center(
           child: Column(
@@ -125,7 +127,6 @@ class _MyHomePageState extends State<MyHomePage> {
             .toList(),
         currentIndex: _selectedIndex,
         onTap: (int index) {
-          analytics.setCurrentScreen(categories[index].name);
           analytics.logEvent('select_category', {'name': categories[index].name});
           _onItemTapped(index);
         },
