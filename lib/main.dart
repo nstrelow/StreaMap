@@ -82,10 +82,17 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  Analytics analytics;
+
+  @override
+  void initState() {
+    super.initState();
+    analytics = context.read<Analytics>();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final categories = Provider.of<List<Category>>(context);
-    final analytics = Provider.of<Analytics>(context);
+    final categories = context.watch<List<Category>>();
 
     analytics.setCurrentScreen('categories');
 

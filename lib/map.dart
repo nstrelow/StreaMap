@@ -94,8 +94,7 @@ void playVideo(BuildContext context, Kind kind) {
   }
 
   final video = kind.videos.values.firstWhere((video) => video.display);
-  final analytics = Provider.of<Analytics>(context);
-  analytics.logEvent('select_video', {'name': kind.name});
+  context.read<Analytics>().logEvent('select_video', {'name': kind.name});
 
   if (foundation.kIsWeb) {
     //_launchLiveStreamUrl(video.link);
