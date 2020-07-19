@@ -16,14 +16,12 @@ class _YouTubeLiveStreamPlayerState extends State<YouTubeLiveStreamPlayer> {
   YoutubePlayerController _controller;
   @override
   void initState() {
-    _controller = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(widget.videoUrl),
-      flags: YoutubePlayerFlags(
-        isLive: true,
-        autoPlay: true,
-      ),
-    );
     super.initState();
+    _controller = YoutubePlayerController(
+        initialVideoId: YoutubePlayerController.convertUrlToId(widget.videoUrl),
+        params: YoutubePlayerParams(
+          showFullscreenButton: true,
+        ));
   }
 
   @override
@@ -34,7 +32,7 @@ class _YouTubeLiveStreamPlayerState extends State<YouTubeLiveStreamPlayer> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.close();
     super.dispose();
   }
 
@@ -43,11 +41,17 @@ class _YouTubeLiveStreamPlayerState extends State<YouTubeLiveStreamPlayer> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.activityName),
+        leading: IconButton(
+          icon: const BackButtonIcon(),
+          onPressed: () {
+            context.read<Analytics>().logEvent('navigate_back', {'from': widget.activityName});
+            Navigator.maybePop(context);
+          },
+        ),
       ),
       body: Center(
-        child: YoutubePlayer(
+        child: YoutubePlayerIFrame(
           controller: _controller,
-          liveUIColor: Colors.deepPurpleAccent,
         ),
       ),
     );
