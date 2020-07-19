@@ -27,7 +27,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -39,8 +39,8 @@ android {
 
     defaultConfig {
         applicationId "de.nilsulla.streamap"
-        minSdkVersion 16
-        targetSdkVersion 29
+        minSdkVersion 17
+        targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
@@ -61,7 +61,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation platform('com.google.firebase:firebase-bom:25.1.1')
+    implementation platform('com.google.firebase:firebase-bom:25.6.0')
     implementation 'com.google.firebase:firebase-firestore'
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
