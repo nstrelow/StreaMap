@@ -96,11 +96,13 @@ class _MyHomePageState extends State<MyHomePage> {
     analytics.setCurrentScreen(screenName: 'categories');
 
     if (categories.isEmpty) {
-      return Center(
-          child: Column(
-        children: [Image.asset('assets/logo-wide.png'), CircularProgressIndicator()],
-        mainAxisAlignment: MainAxisAlignment.center,
-      ));
+      return Scaffold(
+        body: Center(
+            child: Column(
+          children: [Image.asset('assets/logo-wide.png'), CircularProgressIndicator()],
+          mainAxisAlignment: MainAxisAlignment.center,
+        )),
+      );
     }
 
     final category = categories[_selectedIndex];
