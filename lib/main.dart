@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<List<Category>>(create: (_) => streamOfConfigCategories(), initialData: []),
+        StreamProvider<List<Category>>(create: (_) => streamOfConfigCategories(), initialData: const []),
         Provider<FirebaseAnalytics>(create: (_) => FirebaseAnalytics())
       ],
       child: MaterialApp(
@@ -134,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ))
             .toList(),
         currentIndex: _selectedIndex,
-        onTap: (int index) {
+        onTap: (index) {
           analytics.logEvent(name: 'select_category', parameters: {'name': categories[index].name});
           _onItemTapped(index);
         },
@@ -146,9 +146,9 @@ class _MyHomePageState extends State<MyHomePage> {
     final iconAuthors = categories
         .expand((c) => c.kinds.values.expand((k) => k.videos.values.map((v) => v.display ? v.image.author : '')))
         .toSet()
-        .toList();
-    iconAuthors.remove('');
-    iconAuthors.sort();
+        .toList()
+          ..remove('')
+          ..sort();
 
     showDialog(
         context: context,
@@ -195,7 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
                           child: InkWell(
                             onTap: () {
-                              launch('https://www.flaticon.com/authors/' + author.replaceAll(RegExp(r'\s|_'), '-'));
+                              launch('https://www.flaticon.com/authors/${author.replaceAll(RegExp(r'\s|_'), '-')}');
                             },
                             child: Text(
                               author,

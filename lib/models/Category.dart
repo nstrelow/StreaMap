@@ -79,7 +79,7 @@ class Kind {
 
   Map<String, dynamic> toMap() => {
         'color': color,
-        'image': image == null ? null : image.toMap(),
+        'image': image?.toMap(),
         'name': name,
         'videos': Map.from(videos).map((k, v) => MapEntry<String, dynamic>(k, v.toMap())),
       };
@@ -152,7 +152,7 @@ class Video {
         'color': color,
         'description': description,
         'display': display,
-        'image': image == null ? null : image.toMap(),
+        'image': image?.toMap(),
         'link': link,
         'offline': offline,
         'subtitle': subtitle,

@@ -4,9 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class YouTubeLiveStreamPlayer extends StatefulWidget {
-  final videoUrl;
-  final activityName;
-  const YouTubeLiveStreamPlayer({Key key, @required this.videoUrl, this.activityName}) : super(key: key);
+  final String videoUrl;
+  final String activityName;
+  const YouTubeLiveStreamPlayer({@required this.videoUrl, this.activityName, Key key}) : super(key: key);
 
   @override
   _YouTubeLiveStreamPlayerState createState() => _YouTubeLiveStreamPlayerState();

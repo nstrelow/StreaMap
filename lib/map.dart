@@ -12,7 +12,7 @@ import 'youtube_livestream_player.dart';
 
 class ActivityMap extends StatefulWidget {
   final Category category;
-  const ActivityMap({Key key, @required this.category}) : super(key: key);
+  const ActivityMap({@required this.category, Key key}) : super(key: key);
   @override
   _ActivityMapState createState() => _ActivityMapState();
 }
@@ -26,7 +26,7 @@ class _ActivityMapState extends State<ActivityMap> {
   Widget _buildMap(BuildContext context, Category category) {
     final kinds = category.kinds.values.where((kind) => kind.videos.values.any((video) => video.display)).toList();
 
-    final columnCount = 3;
+    const columnCount = 3;
     final lastItemExtraLength = kinds.length % columnCount == 0 ? 0 : columnCount - kinds.length % columnCount;
     final height = MediaQuery.of(context).size.height -
         kToolbarHeight -
@@ -39,7 +39,7 @@ class _ActivityMapState extends State<ActivityMap> {
       shrinkWrap: true,
       crossAxisCount: columnCount,
       itemCount: kinds.length,
-      itemBuilder: (BuildContext context, int index) => Card(
+      itemBuilder: (context, index) => Card(
         child: Material(
           color: HexColor(kinds[index].color),
           child: InkWell(
@@ -47,14 +47,14 @@ class _ActivityMapState extends State<ActivityMap> {
               playVideo(context, kinds[index]);
             },
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Flexible(
                     flex: 4,
                     child: Padding(
-                      padding: const EdgeInsets.all(4.0),
+                      padding: const EdgeInsets.all(4),
                       child: Image.network(
                         'https://firebasestorage.googleapis.com/v0/b/streamap.appspot.com/o/${category.id}%2F${kinds[index].id}.png?alt=media',
                       ),
@@ -78,7 +78,7 @@ class _ActivityMapState extends State<ActivityMap> {
           ),
         ),
       ),
-      staggeredTileBuilder: (int index) =>
+      staggeredTileBuilder: (index) =>
           StaggeredTile.extent(index == kinds.length - 1 ? lastItemExtraLength + 1 : 1, itemHeight),
       mainAxisSpacing: 0,
       crossAxisSpacing: 0,
@@ -104,6 +104,6 @@ void _launchLiveStreamUrl(String url) async {
   if (await canLaunch(url)) {
     await launch(url);
   } else {
-    throw 'Could not launch $url';
+    print('Could not launch $url');
   }
 }
