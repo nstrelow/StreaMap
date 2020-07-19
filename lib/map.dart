@@ -1,5 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:firebase/firebase.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -92,7 +92,7 @@ void playVideo(BuildContext context, Kind kind) {
   }
 
   final video = kind.videos.values.firstWhere((video) => video.display);
-  context.read<Analytics>().logEvent('select_video', {'name': kind.name});
+  context.read<FirebaseAnalytics>().logEvent(name: 'select_video', parameters: {'name': kind.name});
 
   Navigator.push(
     context,

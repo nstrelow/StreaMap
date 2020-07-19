@@ -1,4 +1,4 @@
-import 'package:firebase/firebase.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -44,7 +44,9 @@ class _YouTubeLiveStreamPlayerState extends State<YouTubeLiveStreamPlayer> {
         leading: IconButton(
           icon: const BackButtonIcon(),
           onPressed: () {
-            context.read<Analytics>().logEvent('navigate_back', {'from': widget.activityName});
+            context
+                .read<FirebaseAnalytics>()
+                .logEvent(name: 'navigate_back', parameters: {'from': widget.activityName});
             Navigator.maybePop(context);
           },
         ),

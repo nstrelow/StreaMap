@@ -23,7 +23,7 @@ dependencies:
   auto_size_text:
   cloud_firestore:
   cupertino_icons:
-  firebase:
+  firebase_analytics:
   flutter_staggered_grid_view:
   material_design_icons_flutter:
   provider:
