@@ -41,7 +41,7 @@ class _ActivityMapState extends State<ActivityMap> {
       itemCount: kinds.length,
       itemBuilder: (context, index) => Card(
         child: Material(
-          color: HexColor(kinds[index].color),
+          color: HexColor.fromHex(kinds[index].color),
           child: InkWell(
             onTap: () {
               playVideo(context, kinds[index]);

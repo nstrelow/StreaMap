@@ -115,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[Icon(icon), SizedBox(width: 8), Text(category.name)]),
-        backgroundColor: category.color != null ? HexColor(category.color) : Colors.blueGrey,
+        backgroundColor: category.color != null ? HexColor.fromHex(category.color) : Colors.blueGrey,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.info),
@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
             .map((category) => BottomNavigationBarItem(
                   icon: Icon(category.icon != null ? MdiIcons.fromString(category.icon) : MdiIcons.helpBox),
                   title: Text(category.name),
-                  backgroundColor: category.color != null ? HexColor(category.color) : Colors.blueGrey,
+                  backgroundColor: category.color != null ? HexColor.fromHex(category.color) : Colors.blueGrey,
                 ))
             .toList(),
         currentIndex: _selectedIndex,

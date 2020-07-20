@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
-class HexColor extends Color {
-  static int _getColorFromHex(String hexColor) {
-    var hexColorNoHash = hexColor.toUpperCase().replaceAll('#', '');
-    if (hexColorNoHash.length == 6) {
-      hexColorNoHash = 'FF$hexColorNoHash';
-    }
-    return int.parse(hexColorNoHash, radix: 16);
+extension HexColor on Color {
+  /// String is in the format "aabbcc" or "ffaabbcc" with an optional leading "#".
+  static Color fromHex(String hexString) {
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    buffer.write(hexString.replaceFirst('#', ''));
+    return Color(int.tryParse(buffer.toString(), radix: 16) ?? 0xff9e9e9e);
   }
 
-  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+  /// Prefixes a hash sign if [leadingHashSign] is set to `true` (default is `true`).
+  String toHex({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
+      '${alpha.toRadixString(16).padLeft(2, '0')}'
+      '${red.toRadixString(16).padLeft(2, '0')}'
+      '${green.toRadixString(16).padLeft(2, '0')}'
+      '${blue.toRadixString(16).padLeft(2, '0')}';
 }
