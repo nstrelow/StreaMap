@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -16,11 +15,11 @@ import 'models/config.dart';
 import 'utils/hex_color.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(StreaMapApp());
 }
 
-class MyApp extends StatelessWidget {
-  MyApp();
+class StreaMapApp extends StatelessWidget {
+  const StreaMapApp();
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +45,11 @@ bool hasDisplayVideos(Category category) {
 }
 
 Stream<List<Category>> streamOfConfigCategories() {
-  return streamOfConfig().flatMap((config) => streamOfCategories(config));
+  return streamOfConfig().flatMap(streamOfCategories);
 }
 
 Stream<Config> streamOfConfig() {
-  var ref = Firestore.instance.collection('config').document('prod');
+  final ref = Firestore.instance.collection('config').document('prod');
   return ref.snapshots().map((snap) => Config.fromMap(snap.data));
 }
 
@@ -64,7 +63,7 @@ Stream<List<Category>> streamOfCategories(Config config) {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
@@ -99,8 +98,8 @@ class _MyHomePageState extends State<MyHomePage> {
       return Scaffold(
         body: Center(
             child: Column(
-          children: [Image.asset('assets/logo-wide.png'), CircularProgressIndicator()],
           mainAxisAlignment: MainAxisAlignment.center,
+          children: [Image.asset('assets/logo-wide.png'), CircularProgressIndicator()],
         )),
       );
     }
