@@ -36,6 +36,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   effective_dart:
+  flutter_launcher_icons:
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "web/android-chrome-512x512.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
