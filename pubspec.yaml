@@ -10,9 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cloud_firestore:
+  cloud_firestore: 0.14.0-dev.1
   firebase_analytics:
-  firebase_core:
+  firebase_core: 0.5.0-dev.1
 
   auto_size_text:
   cupertino_icons:

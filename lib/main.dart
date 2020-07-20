@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -14,7 +15,9 @@ import 'models/category.dart';
 import 'models/config.dart';
 import 'utils/hex_color.dart';
 
-void main() {
+Future<void> main() async {
+  await WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(StreaMapApp());
 }
 
@@ -49,13 +52,13 @@ Stream<List<Category>> streamOfConfigCategories() {
 }
 
 Stream<Config> streamOfConfig() {
-  final ref = Firestore.instance.collection('config').document('prod');
-  return ref.snapshots().map((snap) => Config.fromMap(snap.data));
+  final ref = FirebaseFirestore.instance.collection('config').doc('prod');
+  return ref.snapshots().map((snap) => Config.fromMap(snap.data()));
 }
 
 Stream<List<Category>> streamOfCategories(Config config) {
-  return Firestore.instance.collection(config.database).snapshots().map((snap) {
-    final categories = snap.documents.map((doc) => Category.fromMap(doc.data)).where(hasDisplayVideos).toList();
+  return FirebaseFirestore.instance.collection(config.database).snapshots().map((snap) {
+    final categories = snap.docs.map((doc) => Category.fromMap(doc.data())).where(hasDisplayVideos).toList();
     final indexMap = {for (var c in categories) c.id: config.order.contains(c.id) ? config.order.indexOf(c.id) : 1000};
     categories.sort((a, b) => indexMap[a.id] - indexMap[b.id]);
     return categories;
