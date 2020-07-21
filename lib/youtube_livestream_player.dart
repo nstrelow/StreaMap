@@ -1,4 +1,5 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
@@ -35,7 +36,11 @@ class _YouTubeLiveStreamPlayerState extends State<YouTubeLiveStreamPlayer> {
 
   @override
   void dispose() {
-    _controller.close();
+    _controller.reset();
+    // Closing the controller throws error on opening new video
+    if (!kIsWeb) {
+      _controller.close();
+    }
     super.dispose();
   }
 
