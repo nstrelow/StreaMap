@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
@@ -20,20 +19,18 @@ class ActivityMap extends StatefulWidget {
 class _ActivityMapState extends State<ActivityMap> {
   @override
   Widget build(BuildContext context) {
-    return _buildMap(context, widget.category);
+    return LayoutBuilder(
+      builder: (context, constraints) => _buildMap(context, constraints, widget.category),
+    );
   }
 
-  Widget _buildMap(BuildContext context, Category category) {
+  Widget _buildMap(BuildContext context, BoxConstraints constraints, Category category) {
     final kinds = category.kinds.values.where((kind) => kind.videos.values.any((video) => video.display)).toList();
 
     const columnCount = 3;
     final lastItemExtraLength = kinds.length % columnCount == 0 ? 0 : columnCount - kinds.length % columnCount;
-    final height = MediaQuery.of(context).size.height -
-        kToolbarHeight -
-        kBottomNavigationBarHeight -
-        MediaQuery.of(context).padding.top -
-        MediaQuery.of(context).padding.bottom;
-    final itemHeight = height / (kinds.length / columnCount).ceil();
+
+    final itemHeight = constraints.biggest.height / (kinds.length / columnCount).ceil();
 
     return StaggeredGridView.countBuilder(
       shrinkWrap: true,
