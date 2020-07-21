@@ -88,14 +88,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    analytics = context.read<FirebaseAnalytics>();
+    analytics = context.read<FirebaseAnalytics>()..setCurrentScreen(screenName: 'categories');
   }
 
   @override
   Widget build(BuildContext context) {
     final categories = context.watch<List<Category>>();
-
-    analytics.setCurrentScreen(screenName: 'categories');
 
     if (categories.isEmpty) {
       return Scaffold(
