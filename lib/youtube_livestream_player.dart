@@ -14,6 +14,8 @@ class YouTubeLiveStreamPlayer extends StatefulWidget {
 
 class _YouTubeLiveStreamPlayerState extends State<YouTubeLiveStreamPlayer> {
   YoutubePlayerController _controller;
+  FirebaseAnalytics analytics;
+
   @override
   void initState() {
     super.initState();
@@ -22,6 +24,7 @@ class _YouTubeLiveStreamPlayerState extends State<YouTubeLiveStreamPlayer> {
         params: YoutubePlayerParams(
           showFullscreenButton: true,
         ));
+    analytics = context.read<FirebaseAnalytics>()..setCurrentScreen(screenName: 'video');
   }
 
   @override
@@ -44,9 +47,7 @@ class _YouTubeLiveStreamPlayerState extends State<YouTubeLiveStreamPlayer> {
         leading: IconButton(
           icon: const BackButtonIcon(),
           onPressed: () {
-            context
-                .read<FirebaseAnalytics>()
-                .logEvent(name: 'navigate_back', parameters: {'from': widget.activityName});
+            analytics.logEvent(name: 'navigate_back', parameters: {'from': widget.activityName});
             Navigator.maybePop(context);
           },
         ),
