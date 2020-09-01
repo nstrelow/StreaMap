@@ -3,7 +3,6 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'models/category.dart';
 import 'utils/hex_color.dart';
@@ -97,10 +96,10 @@ void playVideo(BuildContext context, Kind kind) {
   );
 }
 
-void _launchLiveStreamUrl(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    print('Could not launch $url');
-  }
-}
+// void _launchLiveStreamUrl(String url) async {
+//   if (await canLaunch(url)) {
+//     await launch(url);
+//   } else {
+//     print('Could not launch $url');
+//   }
+// }

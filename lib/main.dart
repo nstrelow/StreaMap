@@ -3,13 +3,12 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:url_launcher/url_launcher.dart';
 
+import 'info_dialog.dart';
 import 'map.dart';
 import 'models/category.dart';
 import 'models/config.dart';
@@ -28,7 +27,13 @@ class StreaMapApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<List<Category>>(create: (_) => streamOfConfigCategories(), initialData: const []),
+        StreamProvider<List<Category>>(
+            create: (_) => streamOfConfigCategories(),
+            initialData: const [],
+            catchError: (context, error) {
+              print('Error: $error');
+              return [];
+            }),
         Provider<FirebaseAnalytics>(create: (_) => FirebaseAnalytics())
       ],
       child: MaterialApp(
@@ -83,6 +88,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  List<String> _iconAuthors(List<Category> categories) => categories
+      .expand((c) => c.kinds.values.expand((k) => k.videos.values.map((v) => v.display ? v.image.author : '')))
+      .toSet()
+      .toList()
+        ..remove('')
+        ..sort();
+
   FirebaseAnalytics analytics;
 
   @override
@@ -118,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: Icon(Icons.info),
             onPressed: () {
-              showInfoDialog(context, categories);
+              showDialog(context: context, child: InfoDialog(iconAuthors: _iconAuthors(categories)));
             },
           )
         ],
@@ -140,73 +152,5 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
     );
-  }
-
-  void showInfoDialog(BuildContext context, List<Category> categories) {
-    final iconAuthors = categories
-        .expand((c) => c.kinds.values.expand((k) => k.videos.values.map((v) => v.display ? v.image.author : '')))
-        .toSet()
-        .toList()
-          ..remove('')
-          ..sort();
-
-    showDialog(
-        context: context,
-        child: SimpleDialog(
-          titlePadding: EdgeInsets.fromLTRB(24, 16, 24, 0),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
-          title: Column(
-            children: <Widget>[
-              Text(
-                '🦓 StreaMap',
-                style: Theme.of(context).textTheme.headline4.copyWith(color: Theme.of(context).primaryColor),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Adventure at home',
-                style: Theme.of(context).textTheme.headline6.copyWith(color: Colors.blueGrey),
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Brought to you by Ulla and Nils',
-                style: TextStyle(fontSize: 14),
-              )
-            ],
-          ),
-          contentPadding: EdgeInsets.all(24),
-          children: <Widget>[
-            Column(children: <Widget>[
-              RichText(
-                text: TextSpan(style: Theme.of(context).textTheme.headline6, children: [
-                  TextSpan(text: 'Icons from '),
-                  TextSpan(
-                      style: TextStyle(color: Colors.blue),
-                      text: 'www.flaticon.com',
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          launch('https://www.flaticon.com/');
-                        }),
-                  TextSpan(text: ' made by'),
-                ]),
-              ),
-              Column(
-                children: iconAuthors
-                    .map((author) => Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
-                          child: InkWell(
-                            onTap: () {
-                              launch('https://www.flaticon.com/authors/${author.replaceAll(RegExp(r'\s|_'), '-')}');
-                            },
-                            child: Text(
-                              author,
-                              style: TextStyle(fontSize: 18, color: Colors.blue),
-                            ),
-                          ),
-                        ))
-                    .toList(),
-              )
-            ])
-          ],
-        ));
   }
 }
