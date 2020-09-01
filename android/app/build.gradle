@@ -74,8 +74,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation platform('com.google.firebase:firebase-bom:25.6.0')
-    implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.guava:guava:29.0-android'
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
 }
