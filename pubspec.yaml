@@ -1,7 +1,7 @@
 name: StreaMap
 description: A map displaying livestreams of zoos, concerts and other fun activities
 
-version: 1.2.0+1
+version: 1.2.1
 
 environment:
   sdk: '>=2.7.0 <3.0.0'
@@ -10,9 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cloud_firestore: 0.14.0-dev.1
+  cloud_firestore:
   firebase_analytics:
-  firebase_core: 0.5.0-dev.1
+  firebase_core:
 
   auto_size_text:
   cupertino_icons:
