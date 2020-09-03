@@ -35,7 +35,7 @@ flutter_icons:
   ios: true
   image_path: "assets/noun_Zebra_50798.png"
   adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground: "assets/noun_Zebra_50798.png"
+  adaptive_icon_foreground: "assets/noun_Zebra_50798_android.png"
 
 flutter:
   uses-material-design: true
