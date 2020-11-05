@@ -23,6 +23,10 @@ dependencies:
   rxdart:
   url_launcher:
   youtube_player_iframe:
+    git:
+      url: https://github.com/nstrelow/youtube_player_flutter.git
+      ref: master
+      path: packages/youtube_player_iframe
 
 dev_dependencies:
   flutter_test:
