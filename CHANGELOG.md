@@ -1,3 +1,7 @@
+## 1.2.5
+
+- Fix youtube player crashing on web
+
 ## 1.2.3
 
 - Fix padding of Android adaptive icon
