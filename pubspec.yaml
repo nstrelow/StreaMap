@@ -18,7 +18,7 @@ dependencies:
   cupertino_icons:
   flutter_staggered_grid_view:
   material_design_icons_flutter:
-  package_info:
+  package_info_plus:
   provider:
   rxdart:
   url_launcher:

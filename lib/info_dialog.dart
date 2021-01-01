@@ -1,10 +1,7 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'version.dart';
 
 class InfoDialog extends StatefulWidget {
   final List<String> iconAuthors;
@@ -21,18 +18,12 @@ class _InfoDialogState extends State<InfoDialog> {
   String buildNumber;
 
   Future<void> getVersion() async {
-    appName = 'StreaMap';
-    version = versionName;
-    buildNumber = 'web';
-
-    if (!kIsWeb) {
-      final packageInfo = await PackageInfo.fromPlatform();
-      setState(() {
-        appName = packageInfo.appName;
-        version = packageInfo.version;
-        buildNumber = packageInfo.buildNumber;
-      });
-    }
+    final packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      appName = packageInfo.appName;
+      version = packageInfo.version;
+      buildNumber = packageInfo.buildNumber;
+    });
   }
 
   @override
@@ -63,7 +54,8 @@ class _InfoDialogState extends State<InfoDialog> {
             style: TextStyle(fontSize: 14),
           ),
           SizedBox(height: 8),
-          Text('Version: $version-$buildNumber', style: TextStyle(fontSize: 14)),
+          Text('Version: $version', style: TextStyle(fontSize: 14)),
+          if (buildNumber != null) Text(buildNumber),
         ],
       ),
       contentPadding: EdgeInsets.all(24),
