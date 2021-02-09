@@ -1,7 +1,7 @@
 name: StreaMap
 description: A map displaying livestreams of zoos, concerts and other fun activities
 
-version: 1.2.5
+version: 1.2.6
 
 environment:
   sdk: '>=2.7.0 <3.0.0'
