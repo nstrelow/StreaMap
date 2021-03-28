@@ -130,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: Icon(Icons.info),
             onPressed: () {
-              showDialog(context: context, child: InfoDialog(iconAuthors: _iconAuthors(categories)));
+              showDialog(context: context, builder: (context) => InfoDialog(iconAuthors: _iconAuthors(categories)));
             },
           )
         ],
