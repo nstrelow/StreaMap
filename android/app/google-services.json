@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "823118640325",
+    "firebase_url": "https://streamap.firebaseio.com",
+    "project_id": "streamap",
+    "storage_bucket": "streamap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823118640325:android:60c1843d9c5d57e599ecac",
+        "android_client_info": {
+          "package_name": "de.nilsulla.streamap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823118640325-fob37jj2f96cp7kr5f8gke4j2kim52b6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.nilsulla.streamap",
+            "certificate_hash": "43e4c7e2a14b7780be627623ddcf439f2b456cb9"
+          }
+        },
+        {
+          "client_id": "823118640325-9pbiadu3dv8c43355dmdr1im2bhpdemn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXAT1429HE0AWluKnrzTTKMvYKNOHzbdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823118640325-9pbiadu3dv8c43355dmdr1im2bhpdemn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
