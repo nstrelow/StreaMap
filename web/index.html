@@ -36,6 +36,11 @@
   <script defer src="/__/firebase/8.8.0/firebase-firestore.js"></script>
   <script defer src="/__/firebase/8.8.0/firebase-storage.js"></script>
   <script defer src="/__/firebase/8.8.0/firebase-analytics.js"></script>
+  <!--
+     initialize the SDK after all desired features are loaded, set useEmulator to false
+     to avoid connecting the SDK to running emulators.
+   -->
+  <script defer src="/__/firebase/init.js?useEmulator=true"></script>
 
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
