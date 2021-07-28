@@ -2,18 +2,19 @@ name: Deploy flutter to firebase hosting
 
 on:
   push:
-    branches: [ master, dev ]
+    branches:
+      - master
+      - dev
   pull_request:
-    branches: [ master, dev ]
+    branches:
+      - master
+      - dev
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-java@v1
-      with:
-        java-version: '14.x'
     - uses: subosito/flutter-action@v1
       with:
         channel: 'beta'
@@ -22,26 +23,9 @@ jobs:
       run: flutter pub get
     - name: flutter build web
       run: flutter build web
-    - name: Archive Production Artifact
-      uses: actions/upload-artifact@v1
+    - uses: FirebaseExtended/action-hosting-deploy@v0
       with:
-        name: web
-        path: build/web
-
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v2
-      - name: Download Artifact
-        uses: actions/download-artifact@v1
-        with:
-          name: web
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: deploy --only hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        repoToken: '${{ secrets.GITHUB_TOKEN }}'
+        firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_STREAMAP }}'
+        channelId: live
+        projectId: streamap
