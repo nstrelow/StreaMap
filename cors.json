@@ -1,0 +1,7 @@
+[
+  {
+    "origin": ["https://streamap.nstrelow.de", "https://streamap.web.app"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  }
+]
